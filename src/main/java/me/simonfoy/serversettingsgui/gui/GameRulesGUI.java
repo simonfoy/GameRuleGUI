@@ -29,13 +29,13 @@ public class GameRulesGUI implements Listener {
 
     private void handleGameRuleToggle(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
+        World world = player.getWorld();
 
         if (event.getCurrentItem().getType() == Material.BELL
                 && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Announce Advancements")) {
 
-            World world = player.getWorld();
-            boolean currentState = world.getGameRuleValue(GameRule.ANNOUNCE_ADVANCEMENTS);
-            world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, !currentState);
+            boolean announceAdvancementsCurrentState = world.getGameRuleValue(GameRule.ANNOUNCE_ADVANCEMENTS);
+            world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, !announceAdvancementsCurrentState);
 
             openGameRulesGUI(player);
 
@@ -43,9 +43,17 @@ public class GameRulesGUI implements Listener {
         } else if (event.getCurrentItem().getType() == Material.TNT
                 && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Block Explosion Drop Decay")) {
 
-            World world = player.getWorld();
-            boolean currentState = world.getGameRuleValue(GameRule.BLOCK_EXPLOSION_DROP_DECAY);
-            world.setGameRule(GameRule.BLOCK_EXPLOSION_DROP_DECAY, !currentState);
+            boolean blockExplosionDropDecayCurrentState = world.getGameRuleValue(GameRule.BLOCK_EXPLOSION_DROP_DECAY);
+            world.setGameRule(GameRule.BLOCK_EXPLOSION_DROP_DECAY, !blockExplosionDropDecayCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.COMMAND_BLOCK
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Command Block Output")) {
+
+            boolean commandBlockOutputCurrentState = world.getGameRuleValue(GameRule.COMMAND_BLOCK_OUTPUT);
+            world.setGameRule(GameRule.COMMAND_BLOCK_OUTPUT, !commandBlockOutputCurrentState);
 
             openGameRulesGUI(player);
 
@@ -78,6 +86,16 @@ public class GameRulesGUI implements Listener {
         blockExplosionDropDecayItem.setItemMeta(blockExplosionDropDecayItemMeta);
 
         gui.setItem(1, blockExplosionDropDecayItem);
+
+        ItemStack commandBlockOutputItem = new ItemStack(Material.COMMAND_BLOCK);
+        ItemMeta commandBlockOutputItemMeta = commandBlockOutputItem.getItemMeta();
+
+        boolean commandBlockOutputCurrentState = world.getGameRuleValue(GameRule.COMMAND_BLOCK_OUTPUT);
+        commandBlockOutputItemMeta.setDisplayName(ChatColor.GREEN + "Command Block Output: " + (commandBlockOutputCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        commandBlockOutputItem.setItemMeta(commandBlockOutputItemMeta);
+
+        gui.setItem(2, commandBlockOutputItem);
 
         player.openInventory(gui);
     }
