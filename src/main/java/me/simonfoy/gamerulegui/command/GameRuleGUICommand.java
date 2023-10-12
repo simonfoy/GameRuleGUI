@@ -16,12 +16,12 @@ public class GameRuleGUICommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            openGameRuleGUI(player);
+            openGameRulesGUI(player);
         }
         return true;
     }
 
-    private void openGameRuleGUI(Player player) {
+    private void openGameRulesGUI(Player player) {
         Inventory gui = Bukkit.createInventory(null, 27, "Your Server Settings");
 
         ItemStack gameRulesItem = new ItemStack(Material.ENCHANTED_BOOK);
