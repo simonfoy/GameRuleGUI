@@ -1,8 +1,6 @@
 package me.simonfoy.serversettingsgui.gui;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,6 +22,24 @@ public class GameRulesGUI implements Listener {
             Player player = (Player) event.getWhoClicked();
             openGameRulesGUI(player);
             event.setCancelled(true);
+        } else if (event.getView().getTitle().equals("Game Rules")) {
+            handleGameRuleToggle(event);
+        }
+    }
+
+    private void handleGameRuleToggle(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+
+        if (event.getCurrentItem().getType() == Material.BELL
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Announce Advancements")) {
+
+            World world = player.getWorld();
+            boolean currentState = world.getGameRuleValue(GameRule.ANNOUNCE_ADVANCEMENTS);
+            world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, !currentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -32,7 +48,11 @@ public class GameRulesGUI implements Listener {
 
         ItemStack announceAdvancementsItem = new ItemStack(Material.BELL);
         ItemMeta announceAdvancementsItemMeta = announceAdvancementsItem.getItemMeta();
-        announceAdvancementsItemMeta.setDisplayName(ChatColor.GREEN + "Announce Advancements");
+
+        World world = player.getWorld();
+        boolean currentState = world.getGameRuleValue(GameRule.ANNOUNCE_ADVANCEMENTS);
+        announceAdvancementsItemMeta.setDisplayName(ChatColor.GREEN + "Announce Advancements: " + (currentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
         announceAdvancementsItem.setItemMeta(announceAdvancementsItemMeta);
 
         gui.setItem(0, announceAdvancementsItem);
