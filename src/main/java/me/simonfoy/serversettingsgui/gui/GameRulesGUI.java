@@ -40,22 +40,44 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.TNT
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Block Explosion Drop Decay")) {
+
+            World world = player.getWorld();
+            boolean currentState = world.getGameRuleValue(GameRule.BLOCK_EXPLOSION_DROP_DECAY);
+            world.setGameRule(GameRule.BLOCK_EXPLOSION_DROP_DECAY, !currentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
     private void openGameRulesGUI(Player player) {
+
+        World world = player.getWorld();
+
         Inventory gui = Bukkit.createInventory(null, 54, "Game Rules");
 
         ItemStack announceAdvancementsItem = new ItemStack(Material.BELL);
         ItemMeta announceAdvancementsItemMeta = announceAdvancementsItem.getItemMeta();
 
-        World world = player.getWorld();
-        boolean currentState = world.getGameRuleValue(GameRule.ANNOUNCE_ADVANCEMENTS);
-        announceAdvancementsItemMeta.setDisplayName(ChatColor.GREEN + "Announce Advancements: " + (currentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+        boolean announceAdvancementsCurrentState = world.getGameRuleValue(GameRule.ANNOUNCE_ADVANCEMENTS);
+        announceAdvancementsItemMeta.setDisplayName(ChatColor.GREEN + "Announce Advancements: " + (announceAdvancementsCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
 
         announceAdvancementsItem.setItemMeta(announceAdvancementsItemMeta);
 
         gui.setItem(0, announceAdvancementsItem);
+
+        ItemStack blockExplosionDropDecayItem = new ItemStack(Material.TNT);
+        ItemMeta blockExplosionDropDecayItemMeta = blockExplosionDropDecayItem.getItemMeta();
+
+        boolean blockExplosionDropDecayCurrentState = world.getGameRuleValue(GameRule.BLOCK_EXPLOSION_DROP_DECAY);
+        blockExplosionDropDecayItemMeta.setDisplayName(ChatColor.GREEN + "Block Explosion Drop Decay: " + (blockExplosionDropDecayCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        blockExplosionDropDecayItem.setItemMeta(blockExplosionDropDecayItemMeta);
+
+        gui.setItem(1, blockExplosionDropDecayItem);
 
         player.openInventory(gui);
     }
