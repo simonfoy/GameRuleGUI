@@ -1,0 +1,4 @@
+name: GameRuleGUI
+version: '${project.version}'
+main: me.simonfoy.gamerulegui.GameRuleGUI
+api-version: '1.20'
