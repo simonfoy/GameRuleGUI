@@ -1,6 +1,6 @@
-name: GameRuleGUI
+name: ServerSettingsGUI
 version: '${project.version}'
-main: me.simonfoy.gamerulegui.GameRuleGUI
+main: me.simonfoy.serversettingsgui.ServerSettingsGUI
 api-version: '1.20'
 commands:
-  gamerulegui:
+  serversettings:

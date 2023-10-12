@@ -1,4 +1,4 @@
-package me.simonfoy.gamerulegui.command;
+package me.simonfoy.serversettingsgui.command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,17 +11,17 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class GameRuleGUICommand implements CommandExecutor {
+public class ServerSettingsCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            openGameRulesGUI(player);
+            openServerSettingsGUI(player);
         }
         return true;
     }
 
-    private void openGameRulesGUI(Player player) {
+    private void openServerSettingsGUI(Player player) {
         Inventory gui = Bukkit.createInventory(null, 27, "Your Server Settings");
 
         ItemStack gameRulesItem = new ItemStack(Material.ENCHANTED_BOOK);

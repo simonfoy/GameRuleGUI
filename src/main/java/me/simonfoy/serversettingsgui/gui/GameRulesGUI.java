@@ -1,4 +1,4 @@
-package me.simonfoy.gamerulegui.gui;
+package me.simonfoy.serversettingsgui.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
