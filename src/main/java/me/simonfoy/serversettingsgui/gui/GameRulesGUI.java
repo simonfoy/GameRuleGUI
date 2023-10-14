@@ -62,6 +62,15 @@ public class GameRulesGUI implements Listener {
                 && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Command Modification Block Limit")) {
             player.sendMessage(ChatColor.RED + "This feature hasn't been implemented yet!");
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.ELYTRA
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Disable Elytra Movement Check")) {
+
+            boolean disableElytraMovementCheckCurrentState = world.getGameRuleValue(GameRule.DISABLE_ELYTRA_MOVEMENT_CHECK);
+            world.setGameRule(GameRule.DISABLE_ELYTRA_MOVEMENT_CHECK, !disableElytraMovementCheckCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -110,6 +119,18 @@ public class GameRulesGUI implements Listener {
         commandModificationBlockLimitItem.setItemMeta(commandModificationBlockLimitItemMeta);
 
         gui.setItem(3, commandModificationBlockLimitItem);
+
+        ItemStack disableElytraMovementCheckItem = new ItemStack(Material.ELYTRA);
+        ItemMeta disableElytraMovementCheckItemMeta = disableElytraMovementCheckItem.getItemMeta();
+
+        boolean disableElytraMovementCheckCurrentState = world.getGameRuleValue(GameRule.DISABLE_ELYTRA_MOVEMENT_CHECK);
+        disableElytraMovementCheckItemMeta.setDisplayName(ChatColor.GREEN + "Disable Elytra Movement Check: " + (disableElytraMovementCheckCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        disableElytraMovementCheckItem.setItemMeta(disableElytraMovementCheckItemMeta);
+
+        gui.setItem(4, disableElytraMovementCheckItem);
+
+        player.openInventory(gui);
 
         player.openInventory(gui);
     }
