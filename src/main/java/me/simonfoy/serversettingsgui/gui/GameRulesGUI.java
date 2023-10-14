@@ -58,6 +58,10 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.REDSTONE_BLOCK
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Command Modification Block Limit")) {
+            player.sendMessage(ChatColor.RED + "This feature hasn't been implemented yet!");
+            event.setCancelled(true);
         }
     }
 
@@ -96,6 +100,16 @@ public class GameRulesGUI implements Listener {
         commandBlockOutputItem.setItemMeta(commandBlockOutputItemMeta);
 
         gui.setItem(2, commandBlockOutputItem);
+
+        ItemStack commandModificationBlockLimitItem = new ItemStack(Material.REDSTONE_BLOCK);
+        ItemMeta commandModificationBlockLimitItemMeta = commandModificationBlockLimitItem.getItemMeta();
+
+        int commandModificationBlockLimitCurrentState = world.getGameRuleValue(GameRule.COMMAND_MODIFICATION_BLOCK_LIMIT);
+        commandModificationBlockLimitItemMeta.setDisplayName(ChatColor.GREEN + "Command Modification Block Limit: " + ChatColor.YELLOW + commandModificationBlockLimitCurrentState);
+
+        commandModificationBlockLimitItem.setItemMeta(commandModificationBlockLimitItemMeta);
+
+        gui.setItem(3, commandModificationBlockLimitItem);
 
         player.openInventory(gui);
     }
