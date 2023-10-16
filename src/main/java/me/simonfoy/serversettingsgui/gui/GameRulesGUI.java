@@ -71,6 +71,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.TOTEM_OF_UNDYING
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Disable Raids")) {
+
+            boolean disableRaidsCurrentState = world.getGameRuleValue(GameRule.DISABLE_RAIDS);
+            world.setGameRule(GameRule.DISABLE_RAIDS, !disableRaidsCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -130,7 +139,15 @@ public class GameRulesGUI implements Listener {
 
         gui.setItem(4, disableElytraMovementCheckItem);
 
-        player.openInventory(gui);
+        ItemStack disableRaidsItem  = new ItemStack(Material.TOTEM_OF_UNDYING);
+        ItemMeta disableRaidsItemMeta = disableRaidsItem.getItemMeta();
+
+        boolean disableRaidsCurrentState = world.getGameRuleValue(GameRule.DISABLE_RAIDS);
+        disableRaidsItemMeta.setDisplayName(ChatColor.GREEN + "Disable Raids: " + (disableRaidsCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        disableRaidsItem.setItemMeta(disableRaidsItemMeta);
+
+        gui.setItem(5, disableRaidsItem); // Adjust the slot number as needed
 
         player.openInventory(gui);
     }
