@@ -80,6 +80,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.CLOCK
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Do Daylight Cycle")) {
+
+            boolean doDaylightCycleCurrentState = world.getGameRuleValue(GameRule.DO_DAYLIGHT_CYCLE);
+            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, !doDaylightCycleCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -148,6 +157,16 @@ public class GameRulesGUI implements Listener {
         disableRaidsItem.setItemMeta(disableRaidsItemMeta);
 
         gui.setItem(5, disableRaidsItem); // Adjust the slot number as needed
+
+        ItemStack doDaylightCycleItem = new ItemStack(Material.CLOCK);
+        ItemMeta doDaylightCycleItemMeta = doDaylightCycleItem.getItemMeta();
+
+        boolean doDaylightCycleCurrentState = world.getGameRuleValue(GameRule.DO_DAYLIGHT_CYCLE);
+        doDaylightCycleItemMeta.setDisplayName(ChatColor.GREEN + "Do Daylight Cycle: " + (doDaylightCycleCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        doDaylightCycleItem.setItemMeta(doDaylightCycleItemMeta);
+
+        gui.setItem(6, doDaylightCycleItem);
 
         player.openInventory(gui);
     }
