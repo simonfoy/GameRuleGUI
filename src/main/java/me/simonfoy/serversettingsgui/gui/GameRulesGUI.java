@@ -89,6 +89,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.BONE
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Do Entity Drops")) {
+
+            boolean doEntityDropsCurrentState = world.getGameRuleValue(GameRule.DO_ENTITY_DROPS);
+            world.setGameRule(GameRule.DO_ENTITY_DROPS, !doEntityDropsCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -156,7 +165,7 @@ public class GameRulesGUI implements Listener {
 
         disableRaidsItem.setItemMeta(disableRaidsItemMeta);
 
-        gui.setItem(5, disableRaidsItem); // Adjust the slot number as needed
+        gui.setItem(5, disableRaidsItem);
 
         ItemStack doDaylightCycleItem = new ItemStack(Material.CLOCK);
         ItemMeta doDaylightCycleItemMeta = doDaylightCycleItem.getItemMeta();
@@ -167,6 +176,16 @@ public class GameRulesGUI implements Listener {
         doDaylightCycleItem.setItemMeta(doDaylightCycleItemMeta);
 
         gui.setItem(6, doDaylightCycleItem);
+
+        ItemStack doEntityDropsItem = new ItemStack(Material.BONE);
+        ItemMeta doEntityDropsItemMeta = doEntityDropsItem.getItemMeta();
+
+        boolean doEntityDropsCurrentState = world.getGameRuleValue(GameRule.DO_ENTITY_DROPS);
+        doEntityDropsItemMeta.setDisplayName(ChatColor.GREEN + "Do Entity Drops: " + (doEntityDropsCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        doEntityDropsItem.setItemMeta(doEntityDropsItemMeta);
+
+        gui.setItem(7, doEntityDropsItem);
 
         player.openInventory(gui);
     }
