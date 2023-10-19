@@ -98,6 +98,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.FLINT_AND_STEEL
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Do Fire Ticks")) {
+
+            boolean doFireTicksCurrentState = world.getGameRuleValue(GameRule.DO_FIRE_TICK);
+            world.setGameRule(GameRule.DO_FIRE_TICK, !doFireTicksCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -186,6 +195,16 @@ public class GameRulesGUI implements Listener {
         doEntityDropsItem.setItemMeta(doEntityDropsItemMeta);
 
         gui.setItem(7, doEntityDropsItem);
+
+        ItemStack doFireTicksItem = new ItemStack(Material.FLINT_AND_STEEL);
+        ItemMeta doFireTicksItemMeta = doFireTicksItem.getItemMeta();
+
+        boolean doFireTicksCurrentState = world.getGameRuleValue(GameRule.DO_FIRE_TICK);
+        doFireTicksItemMeta.setDisplayName(ChatColor.GREEN + "Do Fire Ticks: " + (doFireTicksCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        doFireTicksItem.setItemMeta(doFireTicksItemMeta);
+
+        gui.setItem(8, doFireTicksItem);
 
         player.openInventory(gui);
     }
