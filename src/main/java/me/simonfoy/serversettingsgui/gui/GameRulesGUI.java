@@ -107,6 +107,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.RED_BED
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Do Immediate Respawn")) {
+
+            boolean doImmediateRespawnCurrentState = world.getGameRuleValue(GameRule.DO_IMMEDIATE_RESPAWN);
+            world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, !doImmediateRespawnCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -205,6 +214,16 @@ public class GameRulesGUI implements Listener {
         doFireTicksItem.setItemMeta(doFireTicksItemMeta);
 
         gui.setItem(8, doFireTicksItem);
+
+        ItemStack doImmediateRespawnItem = new ItemStack(Material.RED_BED);
+        ItemMeta doImmediateRespawnItemMeta = doImmediateRespawnItem.getItemMeta();
+
+        boolean doImmediateRespawnCurrentState = world.getGameRuleValue(GameRule.DO_IMMEDIATE_RESPAWN);
+        doImmediateRespawnItemMeta.setDisplayName(ChatColor.GREEN + "Do Immediate Respawn: " + (doImmediateRespawnCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        doImmediateRespawnItem.setItemMeta(doImmediateRespawnItemMeta);
+
+        gui.setItem(9, doImmediateRespawnItem);
 
         player.openInventory(gui);
     }
