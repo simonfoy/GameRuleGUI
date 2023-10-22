@@ -116,6 +116,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.PHANTOM_MEMBRANE
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Do Insomnia")) {
+
+            boolean doInsomniaCurrentState = world.getGameRuleValue(GameRule.DO_INSOMNIA);
+            world.setGameRule(GameRule.DO_INSOMNIA, !doInsomniaCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -224,6 +233,16 @@ public class GameRulesGUI implements Listener {
         doImmediateRespawnItem.setItemMeta(doImmediateRespawnItemMeta);
 
         gui.setItem(9, doImmediateRespawnItem);
+
+        ItemStack doInsomniaItem = new ItemStack(Material.PHANTOM_MEMBRANE);
+        ItemMeta doInsomniaItemMeta = doInsomniaItem.getItemMeta();
+
+        boolean doInsomniaCurrentState = world.getGameRuleValue(GameRule.DO_INSOMNIA);
+        doInsomniaItemMeta.setDisplayName(ChatColor.GREEN + "Do Insomnia: " + (doInsomniaCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        doInsomniaItem.setItemMeta(doInsomniaItemMeta);
+
+        gui.setItem(10, doInsomniaItem);
 
         player.openInventory(gui);
     }
