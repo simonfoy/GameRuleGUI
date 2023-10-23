@@ -125,6 +125,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.CRAFTING_TABLE
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Do Limited Crafting")) {
+
+            boolean doLimitedCraftingCurrentState = world.getGameRuleValue(GameRule.DO_LIMITED_CRAFTING);
+            world.setGameRule(GameRule.DO_LIMITED_CRAFTING, !doLimitedCraftingCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -243,6 +252,16 @@ public class GameRulesGUI implements Listener {
         doInsomniaItem.setItemMeta(doInsomniaItemMeta);
 
         gui.setItem(10, doInsomniaItem);
+
+        ItemStack doLimitedCraftingItem = new ItemStack(Material.CRAFTING_TABLE);
+        ItemMeta doLimitedCraftingItemMeta = doLimitedCraftingItem.getItemMeta();
+
+        boolean doLimitedCraftingCurrentState = world.getGameRuleValue(GameRule.DO_LIMITED_CRAFTING);
+        doLimitedCraftingItemMeta.setDisplayName(ChatColor.GREEN + "Do Limited Crafting: " + (doLimitedCraftingCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        doLimitedCraftingItem.setItemMeta(doLimitedCraftingItemMeta);
+
+        gui.setItem(11, doLimitedCraftingItem);
 
         player.openInventory(gui);
     }
