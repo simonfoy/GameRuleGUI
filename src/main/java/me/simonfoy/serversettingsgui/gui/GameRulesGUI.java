@@ -134,6 +134,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.ROTTEN_FLESH
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Do Mob Loot")) {
+
+            boolean doMobLootCurrentState = world.getGameRuleValue(GameRule.DO_MOB_LOOT);
+            world.setGameRule(GameRule.DO_MOB_LOOT, !doMobLootCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -262,6 +271,16 @@ public class GameRulesGUI implements Listener {
         doLimitedCraftingItem.setItemMeta(doLimitedCraftingItemMeta);
 
         gui.setItem(11, doLimitedCraftingItem);
+
+        ItemStack doMobLootItem = new ItemStack(Material.ROTTEN_FLESH);
+        ItemMeta doMobLootItemMeta = doMobLootItem.getItemMeta();
+
+        boolean doMobLootCurrentState = world.getGameRuleValue(GameRule.DO_MOB_LOOT);
+        doMobLootItemMeta.setDisplayName(ChatColor.GREEN + "Do Mob Loot: " + (doMobLootCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        doMobLootItem.setItemMeta(doMobLootItemMeta);
+
+        gui.setItem(12, doMobLootItem);
 
         player.openInventory(gui);
     }
