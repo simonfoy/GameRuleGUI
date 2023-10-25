@@ -143,6 +143,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.ZOMBIE_HEAD
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Do Mob Spawning")) {
+
+            boolean doMobSpawningCurrentState = world.getGameRuleValue(GameRule.DO_MOB_SPAWNING);
+            world.setGameRule(GameRule.DO_MOB_SPAWNING, !doMobSpawningCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -281,6 +290,16 @@ public class GameRulesGUI implements Listener {
         doMobLootItem.setItemMeta(doMobLootItemMeta);
 
         gui.setItem(12, doMobLootItem);
+
+        ItemStack doMobSpawningItem = new ItemStack(Material.ZOMBIE_HEAD);
+        ItemMeta doMobSpawningItemMeta = doMobSpawningItem.getItemMeta();
+
+        boolean doMobSpawningCurrentState = world.getGameRuleValue(GameRule.DO_MOB_SPAWNING);
+        doMobSpawningItemMeta.setDisplayName(ChatColor.GREEN + "Do Mob Spawning: " + (doMobSpawningCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        doMobSpawningItem.setItemMeta(doMobSpawningItemMeta);
+
+        gui.setItem(12, doMobSpawningItem);
 
         player.openInventory(gui);
     }
