@@ -152,6 +152,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.PILLAGER_SPAWN_EGG
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Do Patrol Spawning")) {
+
+            boolean doPatrolSpawningCurrentState = world.getGameRuleValue(GameRule.DO_PATROL_SPAWNING);
+            world.setGameRule(GameRule.DO_PATROL_SPAWNING, !doPatrolSpawningCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -300,6 +309,16 @@ public class GameRulesGUI implements Listener {
         doMobSpawningItem.setItemMeta(doMobSpawningItemMeta);
 
         gui.setItem(12, doMobSpawningItem);
+
+        ItemStack doPatrolSpawningItem = new ItemStack(Material.PILLAGER_SPAWN_EGG);
+        ItemMeta doPatrolSpawningItemMeta = doPatrolSpawningItem.getItemMeta();
+
+        boolean doPatrolSpawningCurrentState = world.getGameRuleValue(GameRule.DO_PATROL_SPAWNING);
+        doPatrolSpawningItemMeta.setDisplayName(ChatColor.GREEN + "Do Patrol Spawning: " + (doPatrolSpawningCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        doPatrolSpawningItem.setItemMeta(doPatrolSpawningItemMeta);
+
+        gui.setItem(12, doPatrolSpawningItem);
 
         player.openInventory(gui);
     }
