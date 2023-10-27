@@ -161,6 +161,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.GRASS_BLOCK
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Do Tile Drops")) {
+
+            boolean doTileDropsCurrentState = world.getGameRuleValue(GameRule.DO_TILE_DROPS);
+            world.setGameRule(GameRule.DO_TILE_DROPS, !doTileDropsCurrentState);
+
+            openGameRulesGUI(player);
+            
+            event.setCancelled(true);
         }
     }
 
@@ -319,6 +328,16 @@ public class GameRulesGUI implements Listener {
         doPatrolSpawningItem.setItemMeta(doPatrolSpawningItemMeta);
 
         gui.setItem(12, doPatrolSpawningItem);
+
+        ItemStack doTileDropsItem = new ItemStack(Material.GRASS_BLOCK); // Choose a relevant item, I chose GRASS_BLOCK.
+        ItemMeta doTileDropsItemMeta = doTileDropsItem.getItemMeta();
+
+        boolean doTileDropsCurrentState = world.getGameRuleValue(GameRule.DO_TILE_DROPS);
+        doTileDropsItemMeta.setDisplayName(ChatColor.GREEN + "Do Tile Drops: " + (doTileDropsCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        doTileDropsItem.setItemMeta(doTileDropsItemMeta);
+
+        gui.setItem(13, doTileDropsItem);
 
         player.openInventory(gui);
     }
