@@ -179,6 +179,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.VINE
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Do Vines Spread")) {
+
+            boolean doVinesSpreadCurrentState = world.getGameRuleValue(GameRule.DO_VINES_SPREAD);
+            world.setGameRule(GameRule.DO_VINES_SPREAD, !doVinesSpreadCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -357,6 +366,16 @@ public class GameRulesGUI implements Listener {
         doTraderSpawningItem.setItemMeta(doTraderSpawningItemMeta);
 
         gui.setItem(14, doTraderSpawningItem);
+
+        ItemStack doVinesSpreadItem = new ItemStack(Material.VINE);
+        ItemMeta doVinesSpreadItemMeta = doVinesSpreadItem.getItemMeta();
+
+        boolean doVinesSpreadCurrentState = world.getGameRuleValue(GameRule.DO_VINES_SPREAD);
+        doVinesSpreadItemMeta.setDisplayName(ChatColor.GREEN + "Do Vines Spread: " + (doVinesSpreadCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        doVinesSpreadItem.setItemMeta(doVinesSpreadItemMeta);
+
+        gui.setItem(15, doVinesSpreadItem);
 
         player.openInventory(gui);
     }
