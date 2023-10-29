@@ -168,7 +168,16 @@ public class GameRulesGUI implements Listener {
             world.setGameRule(GameRule.DO_TILE_DROPS, !doTileDropsCurrentState);
 
             openGameRulesGUI(player);
-            
+
+            event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.WANDERING_TRADER_SPAWN_EGG
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Do Trader Spawning")) {
+
+            boolean doTraderSpawningCurrentState = world.getGameRuleValue(GameRule.DO_TRADER_SPAWNING);
+            world.setGameRule(GameRule.DO_TRADER_SPAWNING, !doTraderSpawningCurrentState);
+
+            openGameRulesGUI(player);
+
             event.setCancelled(true);
         }
     }
@@ -329,7 +338,7 @@ public class GameRulesGUI implements Listener {
 
         gui.setItem(12, doPatrolSpawningItem);
 
-        ItemStack doTileDropsItem = new ItemStack(Material.GRASS_BLOCK); // Choose a relevant item, I chose GRASS_BLOCK.
+        ItemStack doTileDropsItem = new ItemStack(Material.GRASS_BLOCK);
         ItemMeta doTileDropsItemMeta = doTileDropsItem.getItemMeta();
 
         boolean doTileDropsCurrentState = world.getGameRuleValue(GameRule.DO_TILE_DROPS);
@@ -338,6 +347,16 @@ public class GameRulesGUI implements Listener {
         doTileDropsItem.setItemMeta(doTileDropsItemMeta);
 
         gui.setItem(13, doTileDropsItem);
+
+        ItemStack doTraderSpawningItem = new ItemStack(Material.WANDERING_TRADER_SPAWN_EGG);
+        ItemMeta doTraderSpawningItemMeta = doTraderSpawningItem.getItemMeta();
+
+        boolean doTraderSpawningCurrentState = world.getGameRuleValue(GameRule.DO_TRADER_SPAWNING);
+        doTraderSpawningItemMeta.setDisplayName(ChatColor.GREEN + "Do Trader Spawning: " + (doTraderSpawningCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        doTraderSpawningItem.setItemMeta(doTraderSpawningItemMeta);
+
+        gui.setItem(14, doTraderSpawningItem);
 
         player.openInventory(gui);
     }
