@@ -188,6 +188,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.WARDEN_SPAWN_EGG
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Do Warden Spawning")) {
+
+            boolean doWardenSpawningCurrentState = world.getGameRuleValue(GameRule.DO_WARDEN_SPAWNING);
+            world.setGameRule(GameRule.DO_WARDEN_SPAWNING, !doWardenSpawningCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -376,6 +385,16 @@ public class GameRulesGUI implements Listener {
         doVinesSpreadItem.setItemMeta(doVinesSpreadItemMeta);
 
         gui.setItem(15, doVinesSpreadItem);
+
+        ItemStack doWardenSpawningItem = new ItemStack(Material.WARDEN_SPAWN_EGG);
+        ItemMeta doWardenSpawningItemMeta = doWardenSpawningItem.getItemMeta();
+
+        boolean doWardenSpawningCurrentState = world.getGameRuleValue(GameRule.DO_WARDEN_SPAWNING);
+        doWardenSpawningItemMeta.setDisplayName(ChatColor.GREEN + "Do Warden Spawning: " + (doWardenSpawningCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        doWardenSpawningItem.setItemMeta(doWardenSpawningItemMeta);
+
+        gui.setItem(16, doWardenSpawningItem);
 
         player.openInventory(gui);
     }
