@@ -197,6 +197,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.CLOCK
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.AQUA + "Do Weather Cycle")) {
+
+            boolean doWeatherCycleCurrentState = world.getGameRuleValue(GameRule.DO_WEATHER_CYCLE);
+            world.setGameRule(GameRule.DO_WEATHER_CYCLE, !doWeatherCycleCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -395,6 +404,16 @@ public class GameRulesGUI implements Listener {
         doWardenSpawningItem.setItemMeta(doWardenSpawningItemMeta);
 
         gui.setItem(16, doWardenSpawningItem);
+
+        ItemStack doWeatherCycleItem = new ItemStack(Material.CLOCK);
+        ItemMeta doWeatherCycleItemMeta = doWeatherCycleItem.getItemMeta();
+
+        boolean doWeatherCycleCurrentState = world.getGameRuleValue(GameRule.DO_WEATHER_CYCLE);
+        doWeatherCycleItemMeta.setDisplayName(ChatColor.AQUA + "Do Weather Cycle: " + (doWeatherCycleCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        doWeatherCycleItem.setItemMeta(doWeatherCycleItemMeta);
+
+        gui.setItem(17, doWeatherCycleItem);
 
         player.openInventory(gui);
     }
