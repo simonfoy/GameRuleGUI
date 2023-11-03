@@ -206,6 +206,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.WATER_BUCKET
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.BLUE + "Drowning Damage")) {
+
+            boolean drowningDamageCurrentState = world.getGameRuleValue(GameRule.DROWNING_DAMAGE);
+            world.setGameRule(GameRule.DROWNING_DAMAGE, !drowningDamageCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -414,6 +423,16 @@ public class GameRulesGUI implements Listener {
         doWeatherCycleItem.setItemMeta(doWeatherCycleItemMeta);
 
         gui.setItem(17, doWeatherCycleItem);
+
+        ItemStack drowningDamageItem = new ItemStack(Material.WATER_BUCKET);
+        ItemMeta drowningDamageItemMeta = drowningDamageItem.getItemMeta();
+
+        boolean drowningDamageCurrentState = world.getGameRuleValue(GameRule.DROWNING_DAMAGE);
+        drowningDamageItemMeta.setDisplayName(ChatColor.BLUE + "Drowning Damage: " + (drowningDamageCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        drowningDamageItem.setItemMeta(drowningDamageItemMeta);
+
+        gui.setItem(18, drowningDamageItem);
 
         player.openInventory(gui);
     }
