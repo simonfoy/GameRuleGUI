@@ -215,6 +215,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.FEATHER
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.YELLOW + "Fall Damage")) {
+
+            boolean fallDamageCurrentState = world.getGameRuleValue(GameRule.FALL_DAMAGE);
+            world.setGameRule(GameRule.FALL_DAMAGE, !fallDamageCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -433,6 +442,16 @@ public class GameRulesGUI implements Listener {
         drowningDamageItem.setItemMeta(drowningDamageItemMeta);
 
         gui.setItem(18, drowningDamageItem);
+
+        ItemStack fallDamageItem = new ItemStack(Material.FEATHER);
+        ItemMeta fallDamageItemMeta = fallDamageItem.getItemMeta();
+
+        boolean fallDamageCurrentState = world.getGameRuleValue(GameRule.FALL_DAMAGE);
+        fallDamageItemMeta.setDisplayName(ChatColor.YELLOW + "Fall Damage: " + (fallDamageCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        fallDamageItem.setItemMeta(fallDamageItemMeta);
+
+        gui.setItem(19, fallDamageItem);
 
         player.openInventory(gui);
     }
