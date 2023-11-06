@@ -233,6 +233,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.TOTEM_OF_UNDYING
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GOLD + "Forgive Dead Players")) {
+
+            boolean forgiveDeadPlayersCurrentState = world.getGameRuleValue(GameRule.FORGIVE_DEAD_PLAYERS);
+            world.setGameRule(GameRule.FORGIVE_DEAD_PLAYERS, !forgiveDeadPlayersCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -471,6 +480,16 @@ public class GameRulesGUI implements Listener {
         fireDamageItem.setItemMeta(fireDamageItemMeta);
 
         gui.setItem(20, fireDamageItem);
+
+        ItemStack forgiveDeadPlayersItem = new ItemStack(Material.TOTEM_OF_UNDYING);
+        ItemMeta forgiveDeadPlayersItemMeta = forgiveDeadPlayersItem.getItemMeta();
+
+        boolean forgiveDeadPlayersCurrentState = world.getGameRuleValue(GameRule.FORGIVE_DEAD_PLAYERS);
+        forgiveDeadPlayersItemMeta.setDisplayName(ChatColor.GOLD + "Forgive Dead Players: " + (forgiveDeadPlayersCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        forgiveDeadPlayersItem.setItemMeta(forgiveDeadPlayersItemMeta);
+
+        gui.setItem(21, forgiveDeadPlayersItem);
 
         player.openInventory(gui);
     }
