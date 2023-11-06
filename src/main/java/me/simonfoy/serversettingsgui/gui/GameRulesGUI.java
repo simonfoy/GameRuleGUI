@@ -224,6 +224,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.BLAZE_POWDER
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.RED + "Fire Damage")) {
+
+            boolean fireDamageCurrentState = world.getGameRuleValue(GameRule.FIRE_DAMAGE);
+            world.setGameRule(GameRule.FIRE_DAMAGE, !fireDamageCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -452,6 +461,16 @@ public class GameRulesGUI implements Listener {
         fallDamageItem.setItemMeta(fallDamageItemMeta);
 
         gui.setItem(19, fallDamageItem);
+
+        ItemStack fireDamageItem = new ItemStack(Material.BLAZE_POWDER);
+        ItemMeta fireDamageItemMeta = fireDamageItem.getItemMeta();
+
+        boolean fireDamageCurrentState = world.getGameRuleValue(GameRule.FIRE_DAMAGE);
+        fireDamageItemMeta.setDisplayName(ChatColor.RED + "Fire Damage: " + (fireDamageCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        fireDamageItem.setItemMeta(fireDamageItemMeta);
+
+        gui.setItem(20, fireDamageItem);
 
         player.openInventory(gui);
     }
