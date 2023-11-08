@@ -242,6 +242,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.ICE
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.AQUA + "Freeze Damage")) {
+
+            boolean freezeDamageCurrentState = world.getGameRuleValue(GameRule.FREEZE_DAMAGE);
+            world.setGameRule(GameRule.FREEZE_DAMAGE, !freezeDamageCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -490,6 +499,16 @@ public class GameRulesGUI implements Listener {
         forgiveDeadPlayersItem.setItemMeta(forgiveDeadPlayersItemMeta);
 
         gui.setItem(21, forgiveDeadPlayersItem);
+
+        ItemStack freezeDamageItem = new ItemStack(Material.ICE);
+        ItemMeta freezeDamageItemMeta = freezeDamageItem.getItemMeta();
+
+        boolean freezeDamageCurrentState = world.getGameRuleValue(GameRule.FREEZE_DAMAGE);
+        freezeDamageItemMeta.setDisplayName(ChatColor.AQUA + "Freeze Damage: " + (freezeDamageCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        freezeDamageItem.setItemMeta(freezeDamageItemMeta);
+
+        gui.setItem(22, freezeDamageItem);
 
         player.openInventory(gui);
     }
