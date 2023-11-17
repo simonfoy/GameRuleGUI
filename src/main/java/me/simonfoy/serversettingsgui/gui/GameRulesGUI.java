@@ -251,6 +251,15 @@ public class GameRulesGUI implements Listener {
             openGameRulesGUI(player);
 
             event.setCancelled(true);
+        } else if (event.getCurrentItem().getType() == Material.ANVIL
+                && event.getCurrentItem().getItemMeta().getDisplayName().startsWith(ChatColor.GREEN + "Global Sound Events")) {
+
+            boolean globalSoundEventsCurrentState = world.getGameRuleValue(GameRule.GLOBAL_SOUND_EVENTS);
+            world.setGameRule(GameRule.GLOBAL_SOUND_EVENTS, !globalSoundEventsCurrentState);
+
+            openGameRulesGUI(player);
+
+            event.setCancelled(true);
         }
     }
 
@@ -509,6 +518,16 @@ public class GameRulesGUI implements Listener {
         freezeDamageItem.setItemMeta(freezeDamageItemMeta);
 
         gui.setItem(22, freezeDamageItem);
+
+        ItemStack globalSoundEventsItem = new ItemStack(Material.ANVIL);
+        ItemMeta globalSoundEventsItemMeta = globalSoundEventsItem.getItemMeta();
+
+        boolean globalSoundEventsCurrentState = world.getGameRuleValue(GameRule.GLOBAL_SOUND_EVENTS);
+        globalSoundEventsItemMeta.setDisplayName(ChatColor.GREEN + "Global Sound Events: " + (globalSoundEventsCurrentState ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+
+        globalSoundEventsItem.setItemMeta(globalSoundEventsItemMeta);
+
+        gui.setItem(23, globalSoundEventsItem);
 
         player.openInventory(gui);
     }
